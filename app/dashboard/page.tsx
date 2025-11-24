@@ -6,6 +6,7 @@ import { setActiveMarket, setSearchQuery, setSortField, updateCryptoPrices, upda
 import { binanceWS } from '@/lib/binance-websocket';
 import { getFinnhubWS } from '@/lib/finnhub-websocket';
 import MarketTable from '@/components/markets/MarketTable';
+import AuthButton from '@/components/auth/AuthButton';
 
 export default function DashboardPage() {
   const dispatch = useAppDispatch();
@@ -71,9 +72,7 @@ export default function DashboardPage() {
               <a href="/watchlist" className="text-gray-300 hover:text-white transition">
                 Watchlist
               </a>
-              <a href="/auth/login" className="px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 transition">
-                Login
-              </a>
+              <AuthButton />
             </nav>
           </div>
         </div>

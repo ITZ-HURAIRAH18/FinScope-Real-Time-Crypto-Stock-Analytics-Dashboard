@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/store/hooks';
 import { formatCurrency, formatPercentage, getPriceChangeColor } from '@/lib/utils';
+import AuthButton from '@/components/auth/AuthButton';
 
 interface WatchlistItem {
   id: string;
@@ -95,6 +96,7 @@ export default function WatchlistPage() {
               {session?.user && (
                 <div className="text-gray-300">{session.user.email}</div>
               )}
+              <AuthButton />
             </nav>
           </div>
         </div>

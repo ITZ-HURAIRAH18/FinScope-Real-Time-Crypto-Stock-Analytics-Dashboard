@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useAppSelector } from '@/store/hooks';
 import { formatCurrency, formatPercentage, getPriceChangeColor } from '@/lib/utils';
 import WatchlistButton from '@/components/watchlist/WatchlistButton';
+import AuthButton from '@/components/auth/AuthButton';
 
 export default function StockDetailPage() {
   const params = useParams();
@@ -47,6 +48,7 @@ export default function StockDetailPage() {
               <a href="/dashboard" className="text-gray-300 hover:text-white transition">Markets</a>
               <a href="/analytics" className="text-gray-300 hover:text-white transition">Analytics</a>
               <a href="/watchlist" className="text-gray-300 hover:text-white transition">Watchlist</a>
+              <AuthButton />
             </nav>
           </div>
         </div>

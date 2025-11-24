@@ -7,6 +7,7 @@ import { binanceWS } from '@/lib/binance-websocket';
 import { getFinnhubWS } from '@/lib/finnhub-websocket';
 import { formatCurrency, formatPercentage, getPriceChangeColor } from '@/lib/utils';
 import { updateCryptoPrices, updateStockPrices } from '@/store/slices/marketSlice';
+import AuthButton from '@/components/auth/AuthButton';
 
 export default function AnalyticsPage() {
   const router = useRouter();
@@ -70,9 +71,7 @@ export default function AnalyticsPage() {
               <a href="/dashboard" className="text-gray-300 hover:text-white transition">Markets</a>
               <a href="/analytics" className="text-white font-semibold">Analytics</a>
               <a href="/watchlist" className="text-gray-300 hover:text-white transition">Watchlist</a>
-              <a href="/auth/login" className="px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 transition">
-                Login
-              </a>
+              <AuthButton />
             </nav>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import AuthButton from "@/components/auth/AuthButton";
 
 export default function HomePage() {
   return (
@@ -19,9 +20,7 @@ export default function HomePage() {
             <Link href="/analytics" className="text-gray-300 hover:text-white transition">
               Analytics
             </Link>
-            <Link href="/auth/login" className="btn-primary px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 transition">
-              Login
-            </Link>
+            <AuthButton />
           </nav>
         </div>
       </header>
