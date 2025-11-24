@@ -55,6 +55,8 @@ class FinnhubWebSocketClient {
         this.symbols.forEach(symbol => {
           this.subscribeSymbol(symbol);
         });
+        // Fetch initial data via REST to populate immediately
+        this.fetchInitialData();
       };
 
       this.ws.onmessage = (event) => {
@@ -82,6 +84,32 @@ class FinnhubWebSocketClient {
       console.error('[Finnhub WS] Connection error:', error);
       this.scheduleReconnect();
     }
+  }
+
+  async fetchInitialData() {
+    console.log('[Finnhub] Fetching initial data...');
+    const promises = this.symbols.map(async (symbol) => {
+      try {
+        const response = await fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${this.apiKey}`);
+        const data = await response.json();
+        // Finnhub quote: c=current, d=change, dp=percent, h=high, l=low, o=open, pc=prev close
+        if (data.c) {
+          this.prices[symbol] = {
+            symbol,
+            price: data.c,
+            priceChange: data.d,
+            priceChangePercent: data.dp,
+            volume: 0, // Quote endpoint doesn't provide volume
+            lastUpdate: Date.now(),
+          };
+        }
+      } catch (e) {
+        console.error(`[Finnhub] Error fetching initial data for ${symbol}`, e);
+      }
+    });
+
+    await Promise.all(promises);
+    this.notifyCallbacksImmediate();
   }
 
   private subscribeSymbol(symbol: string) {

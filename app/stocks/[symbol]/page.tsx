@@ -68,7 +68,16 @@ export default function StockDetailPage() {
         <div className="glass-card p-8 rounded-2xl mb-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center">
+              <img 
+                src={`https://financialmodelingprep.com/image-stock/${symbol}.png`}
+                alt={symbol}
+                className="w-16 h-16 rounded-full"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                }}
+              />
+              <div className="hidden w-16 h-16 bg-gradient-to-r from-green-500 to-blue-600 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold text-2xl">{symbol.substring(0, 2)}</span>
               </div>
               <div>

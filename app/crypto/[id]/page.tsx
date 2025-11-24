@@ -5,6 +5,8 @@ import { useParams, useRouter } from 'next/navigation';
 import { useAppSelector } from '@/store/hooks';
 import { formatCurrency, formatPercentage, getPriceChangeColor, formatLargeNumber } from '@/lib/utils';
 import WatchlistButton from '@/components/watchlist/WatchlistButton';
+import AuthButton from '@/components/auth/AuthButton';
+import CryptoChart from '@/components/crypto/CryptoChart';
 
 export default function CryptoDetailPage() {
   const params = useParams();
@@ -48,6 +50,7 @@ export default function CryptoDetailPage() {
               <a href="/dashboard" className="text-gray-300 hover:text-white transition">Markets</a>
               <a href="/analytics" className="text-gray-300 hover:text-white transition">Analytics</a>
               <a href="/watchlist" className="text-gray-300 hover:text-white transition">Watchlist</a>
+              <AuthButton />
             </nav>
           </div>
         </div>
@@ -67,7 +70,16 @@ export default function CryptoDetailPage() {
         <div className="glass-card p-8 rounded-2xl mb-8">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+              <img 
+                src={`https://assets.coincap.io/assets/icons/${symbol.toLowerCase()}@2x.png`}
+                alt={symbol}
+                className="w-16 h-16 rounded-full"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                }}
+              />
+              <div className="hidden w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
                 <span className="text-white font-bold text-2xl">{symbol.substring(0, 1)}</span>
               </div>
               <div>
@@ -87,6 +99,9 @@ export default function CryptoDetailPage() {
             </div>
           </div>
         </div>
+        
+        {/* Chart Section */}
+        <CryptoChart symbol={symbol} />
 
         {/* Stats Grid */}
         <div className="grid md:grid-cols-3 gap-6 mb-8">

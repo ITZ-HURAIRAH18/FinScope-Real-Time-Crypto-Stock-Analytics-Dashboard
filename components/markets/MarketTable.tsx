@@ -109,19 +109,20 @@ function MarketTable({ type }: MarketTableProps) {
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center">
-                      {type === 'crypto' ? (
-                        <img 
-                          src={`https://assets.coincap.io/assets/icons/${item.symbol.toLowerCase()}@2x.png`}
-                          alt={item.symbol}
-                          className="w-8 h-8 rounded-full mr-3"
-                          onError={(e) => {
-                            // Fallback to gradient if image fails to load
-                            e.currentTarget.style.display = 'none';
-                            e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                          }}
-                        />
-                      ) : null}
-                      <div className={`w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mr-3 group-hover:shadow-lg group-hover:shadow-blue-500/50 transition ${type === 'crypto' ? 'hidden' : ''}`}>
+                      <img 
+                        src={type === 'crypto' 
+                          ? `https://assets.coincap.io/assets/icons/${item.symbol.toLowerCase()}@2x.png`
+                          : `https://financialmodelingprep.com/image-stock/${item.symbol}.png`
+                        }
+                        alt={item.symbol}
+                        className="w-8 h-8 rounded-full mr-3"
+                        onError={(e) => {
+                          // Fallback to gradient if image fails to load
+                          e.currentTarget.style.display = 'none';
+                          e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                        }}
+                      />
+                      <div className="hidden w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mr-3 group-hover:shadow-lg group-hover:shadow-blue-500/50 transition">
                         <span className="text-white font-bold text-sm">
                           {item.symbol.substring(0, 1)}
                         </span>
