@@ -53,7 +53,7 @@ class FinnhubWebSocketClient {
         console.log('[Finnhub WS] Connected successfully');
         // Subscribe to symbols
         this.symbols.forEach(symbol => {
-          this.subscribe Symbol(symbol);
+          this.subscribeSymbol(symbol);
         });
       };
 
@@ -114,12 +114,29 @@ class FinnhubWebSocketClient {
       volume: existingPrice ? existingPrice.volume + volume : volume,
       lastUpdate: Date.now(),
     };
+    // Trigger debounced notification
+    this.notifyCallbacks();
 
     // Notify all subscribers
     this.notifyCallbacks();
   }
 
-  private notifyCallbacks() {
+  private debounceTimer: NodeJS.Timeout | null = null;
+  private pendingUpdate = false;
+
+  private scheduleNotify() {
+    if (this.debounceTimer) return; // already scheduled
+    this.debounceTimer = setTimeout(() => {
+      this.debounceTimer = null;
+      if (this.pendingUpdate) {
+        this.pendingUpdate = false;
+        this.notifyCallbacksImmediate();
+      }
+    }, 200);
+    this.pendingUpdate = true;
+  }
+
+  private notifyCallbacksImmediate() {
     this.callbacks.forEach(callback => {
       try {
         callback(this.prices);
@@ -127,6 +144,10 @@ class FinnhubWebSocketClient {
         console.error('[Finnhub WS] Callback error:', error);
       }
     });
+  }
+
+  private notifyCallbacks() {
+    this.scheduleNotify();
   }
 
   private scheduleReconnect() {

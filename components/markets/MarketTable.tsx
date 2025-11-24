@@ -1,5 +1,7 @@
+
 "use client";
 
+import React from 'react';
 import { useAppSelector } from '@/store/hooks';
 import { formatCurrency, formatPercentage, getPriceChangeColor } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
@@ -8,7 +10,7 @@ interface MarketTableProps {
   type: 'crypto' | 'stocks';
 }
 
-export default function MarketTable({ type }: MarketTableProps) {
+function MarketTable({ type }: MarketTableProps) {
   const router = useRouter();
   const { cryptoPrices, stockPrices, searchQuery, sortField, sortOrder } = useAppSelector(
     (state) => state.market
@@ -107,7 +109,19 @@ export default function MarketTable({ type }: MarketTableProps) {
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mr-3 group-hover:shadow-lg group-hover:shadow-blue-500/50 transition">
+                      {type === 'crypto' ? (
+                        <img 
+                          src={`https://assets.coincap.io/assets/icons/${item.symbol.toLowerCase()}@2x.png`}
+                          alt={item.symbol}
+                          className="w-8 h-8 rounded-full mr-3"
+                          onError={(e) => {
+                            // Fallback to gradient if image fails to load
+                            e.currentTarget.style.display = 'none';
+                            e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                          }}
+                        />
+                      ) : null}
+                      <div className={`w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center mr-3 group-hover:shadow-lg group-hover:shadow-blue-500/50 transition ${type === 'crypto' ? 'hidden' : ''}`}>
                         <span className="text-white font-bold text-sm">
                           {item.symbol.substring(0, 1)}
                         </span>
@@ -161,3 +175,4 @@ export default function MarketTable({ type }: MarketTableProps) {
     </div>
   );
 }
+export default React.memo(MarketTable);
