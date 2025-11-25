@@ -7,6 +7,7 @@ import { formatCurrency, formatPercentage, getPriceChangeColor, formatLargeNumbe
 import WatchlistButton from '@/components/watchlist/WatchlistButton';
 import AuthButton from '@/components/auth/AuthButton';
 import CryptoChart from '@/components/crypto/CryptoChart';
+import LoadingScreen from '@/components/LoadingScreen';
 
 export default function CryptoDetailPage() {
   const params = useParams();
@@ -18,19 +19,7 @@ export default function CryptoDetailPage() {
   const priceData = cryptoPrices[symbol];
 
   if (!priceData) {
-    return (
-      <main className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-2xl text-gray-400 mb-4 animate-pulse">Loading {symbol} data...</div>
-          <button
-            onClick={() => router.push('/dashboard')}
-            className="text-blue-400 hover:text-blue-300 transition"
-          >
-            ← Back to Dashboard
-          </button>
-        </div>
-      </main>
-    );
+    return <LoadingScreen />;
   }
 
   return (

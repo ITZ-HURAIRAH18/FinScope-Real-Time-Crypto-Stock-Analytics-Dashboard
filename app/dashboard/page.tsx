@@ -43,6 +43,10 @@ export default function DashboardPage() {
     };
   }, [dispatch]);
 
+  if (!isInitialized) {
+    return <LoadingScreen />;
+  }
+
   return (
     <main className="min-h-screen bg-black">
       {/* Header */}
@@ -138,29 +142,25 @@ export default function DashboardPage() {
         </div>
 
         {/* Market Tables */}
-        {!isInitialized ? (
-          <LoadingScreen />
-        ) : (
-          <div className="space-y-8">
-            {(activeMarket === 'crypto' || activeMarket === 'both') && (
-              <div>
-                <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
-                  <span className="mr-2">₿</span> Cryptocurrency Markets
-                </h2>
-                <MarketTable type="crypto" />
-              </div>
-            )}
+        <div className="space-y-8">
+          {(activeMarket === 'crypto' || activeMarket === 'both') && (
+            <div>
+              <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
+                <span className="mr-2">₿</span> Cryptocurrency Markets
+              </h2>
+              <MarketTable type="crypto" />
+            </div>
+          )}
 
-            {(activeMarket === 'stocks' || activeMarket === 'both') && (
-              <div>
-                <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
-                  <span className="mr-2">📈</span> Stock Markets
-                </h2>
-                <MarketTable type="stocks" />
-              </div>
-            )}
-          </div>
-        )}
+          {(activeMarket === 'stocks' || activeMarket === 'both') && (
+            <div>
+              <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
+                <span className="mr-2">📈</span> Stock Markets
+              </h2>
+              <MarketTable type="stocks" />
+            </div>
+          )}
+        </div>
       </div>
     </main>
   );
