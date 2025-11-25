@@ -206,8 +206,8 @@ Contributions are welcome! Feel free to open issues or submit pull requests.
 
 ## 📧 Contact
 
-Built by [Your Name]
-- GitHub: [@yourusername](https://github.com/yourusername)
+Built by [M Abu Hurairah]
+- GitHub: [ITZ-HURAIRAH18](https://github.com/ITZ-HURAIRAH18)
 - LinkedIn: [Your Profile](https://linkedin.com/in/yourprofile)
 
 ---
