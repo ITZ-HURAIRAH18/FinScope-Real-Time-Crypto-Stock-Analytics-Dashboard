@@ -208,7 +208,7 @@ Contributions are welcome! Feel free to open issues or submit pull requests.
 
 Built by [M Abu Hurairah]
 - GitHub: [ITZ-HURAIRAH18](https://github.com/ITZ-HURAIRAH18)
-- LinkedIn: [Your Profile](https://linkedin.com/in/yourprofile)
+- LinkedIn: [LindedIn]([https://linkedin.com/in/yourprofile](https://www.linkedin.com/in/muhammad-abu-hurairah-988ba1303/))
 
 ---
 
