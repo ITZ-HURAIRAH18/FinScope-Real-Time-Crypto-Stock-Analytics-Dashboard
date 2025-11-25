@@ -15,7 +15,7 @@ interface MarketState {
 
 const initialState: MarketState = {
   activeMarket: 'both',
-  sortField: 'marketCap',
+  sortField: 'price',
   sortOrder: 'desc',
   searchQuery: '',
   cryptoPrices: {},

@@ -155,7 +155,7 @@ export default function DashboardPage() {
           {(activeMarket === 'stocks' || activeMarket === 'both') && (
             <div>
               <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
-                <span className="mr-2">📈</span> Stock Markets
+                <span className="mr-2">$</span> Stock Markets
               </h2>
               <MarketTable type="stocks" />
             </div>
