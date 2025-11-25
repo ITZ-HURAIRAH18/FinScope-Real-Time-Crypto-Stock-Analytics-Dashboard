@@ -7,6 +7,7 @@ import { binanceWS } from '@/lib/binance-websocket';
 import { getFinnhubWS } from '@/lib/finnhub-websocket';
 import MarketTable from '@/components/markets/MarketTable';
 import AuthButton from '@/components/auth/AuthButton';
+import LoadingScreen from '@/components/LoadingScreen';
 
 export default function DashboardPage() {
   const dispatch = useAppDispatch();
@@ -138,12 +139,7 @@ export default function DashboardPage() {
 
         {/* Market Tables */}
         {!isInitialized ? (
-          <div className="glass-card p-12 rounded-2xl text-center">
-            <div className="animate-pulse">
-              <div className="text-2xl text-gray-400">Connecting to markets...</div>
-              <div className="text-gray-500 mt-2">Establishing WebSocket connections</div>
-            </div>
-          </div>
+          <LoadingScreen />
         ) : (
           <div className="space-y-8">
             {(activeMarket === 'crypto' || activeMarket === 'both') && (

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/store/hooks';
 import { formatCurrency, formatPercentage, getPriceChangeColor } from '@/lib/utils';
 import AuthButton from '@/components/auth/AuthButton';
+import LoadingScreen from '@/components/LoadingScreen';
 
 interface WatchlistItem {
   id: string;
@@ -66,11 +67,7 @@ export default function WatchlistPage() {
   };
 
   if (status === 'loading' || isLoading) {
-    return (
-      <main className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-2xl text-gray-400 animate-pulse">Loading...</div>
-      </main>
-    );
+    return <LoadingScreen />;
   }
 
   const cryptoItems = watchlist.filter((item) => item.type === 'CRYPTO');
@@ -93,9 +90,9 @@ export default function WatchlistPage() {
               <a href="/dashboard" className="text-gray-300 hover:text-white transition">Markets</a>
               <a href="/analytics" className="text-gray-300 hover:text-white transition">Analytics</a>
               <a href="/watchlist" className="text-white font-semibold">Watchlist</a>
-              {session?.user && (
+              {/* {session?.user && (
                 <div className="text-gray-300">{session.user.email}</div>
-              )}
+              )} */}
               <AuthButton />
             </nav>
           </div>
