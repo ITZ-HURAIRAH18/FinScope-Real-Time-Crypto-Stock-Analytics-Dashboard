@@ -1,31 +1,37 @@
 "use client";
 
-import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setActiveMarket, setSearchQuery, setSortField, updateCryptoPrices, updateStockPrices } from '@/store/slices/marketSlice';
-import { binanceWS } from '@/lib/binance-websocket';
-import { getFinnhubWS } from '@/lib/finnhub-websocket';
-import MarketTable from '@/components/markets/MarketTable';
-import AuthButton from '@/components/auth/AuthButton';
-import LoadingScreen from '@/components/LoadingScreen';
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import {
+  setActiveMarket,
+  setSearchQuery,
+  setSortField,
+  updateCryptoPrices,
+  updateStockPrices,
+} from "@/store/slices/marketSlice";
+import { binanceWS } from "@/lib/binance-websocket";
+import { getFinnhubWS } from "@/lib/finnhub-websocket";
+import MarketTable from "@/components/markets/MarketTable";
+import AuthButton from "@/components/auth/AuthButton";
+import LoadingScreen from "@/components/LoadingScreen";
 
 export default function DashboardPage() {
   const dispatch = useAppDispatch();
-  const { activeMarket, searchQuery } = useAppSelector(state => state.market);
+  const { activeMarket, searchQuery } = useAppSelector((state) => state.market);
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
     // Initialize WebSocket connections
-    console.log('Initializing WebSocket connections...');
-    
+    console.log("Initializing WebSocket connections...");
+
     // Connect to Binance
-    binanceWS.connect(); 
+    binanceWS.connect();
     const unsubBinance = binanceWS.subscribe((prices) => {
       dispatch(updateCryptoPrices(prices));
     });
 
     // Connect to Finnhub
-    const finnhubAPIKey = process.env.NEXT_PUBLIC_FINNHUB_API_KEY || '';
+    const finnhubAPIKey = process.env.NEXT_PUBLIC_FINNHUB_API_KEY || "";
     const finnhubWS = getFinnhubWS(finnhubAPIKey);
     finnhubWS.connect();
     const unsubFinnhub = finnhubWS.subscribe((prices) => {
@@ -55,11 +61,9 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center space-x-2">
-              <img 
-                src="/coin_logo.png" 
-                alt="FinScope Logo" 
-                className="w-10 h-10 rounded-lg object-contain"
-              />
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-lg">F</span>
+              </div>
               <span className="text-2xl font-bold gradient-text">FinScope</span>
             </div>
 
@@ -71,10 +75,16 @@ export default function DashboardPage() {
               <a href="/dashboard" className="text-white font-semibold">
                 Markets
               </a>
-              <a href="/analytics" className="text-gray-300 hover:text-white transition">
+              <a
+                href="/analytics"
+                className="text-gray-300 hover:text-white transition"
+              >
                 Analytics
               </a>
-              <a href="/watchlist" className="text-gray-300 hover:text-white transition">
+              <a
+                href="/watchlist"
+                className="text-gray-300 hover:text-white transition"
+              >
                 Watchlist
               </a>
               <AuthButton />
@@ -87,8 +97,12 @@ export default function DashboardPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Title */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Markets Dashboard</h1>
-          <p className="text-gray-400">Real-time cryptocurrency and stock market data</p>
+          <h1 className="text-4xl font-bold text-white mb-2">
+            Markets Dashboard
+          </h1>
+          <p className="text-gray-400">
+            Real-time cryptocurrency and stock market data
+          </p>
         </div>
 
         {/* Filters */}
@@ -97,31 +111,31 @@ export default function DashboardPage() {
             {/* Market Type Toggle */}
             <div className="flex gap-2">
               <button
-                onClick={() => dispatch(setActiveMarket('crypto'))}
+                onClick={() => dispatch(setActiveMarket("crypto"))}
                 className={`px-6 py-2 rounded-lg font-semibold transition ${
-                  activeMarket === 'crypto'
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                  activeMarket === "crypto"
+                    ? "bg-blue-500 text-white"
+                    : "bg-white/10 text-gray-300 hover:bg-white/20"
                 }`}
               >
                 Crypto
               </button>
               <button
-                onClick={() => dispatch(setActiveMarket('stocks'))}
+                onClick={() => dispatch(setActiveMarket("stocks"))}
                 className={`px-6 py-2 rounded-lg font-semibold transition ${
-                  activeMarket === 'stocks'
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                  activeMarket === "stocks"
+                    ? "bg-blue-500 text-white"
+                    : "bg-white/10 text-gray-300 hover:bg-white/20"
                 }`}
               >
                 Stocks
               </button>
               <button
-                onClick={() => dispatch(setActiveMarket('both'))}
+                onClick={() => dispatch(setActiveMarket("both"))}
                 className={`px-6 py-2 rounded-lg font-semibold transition ${
-                  activeMarket === 'both'
-                    ? 'bg-blue-500 text-white'
-                    : 'bg-white/10 text-gray-300 hover:bg-white/20'
+                  activeMarket === "both"
+                    ? "bg-blue-500 text-white"
+                    : "bg-white/10 text-gray-300 hover:bg-white/20"
                 }`}
               >
                 Both
@@ -143,7 +157,7 @@ export default function DashboardPage() {
 
         {/* Market Tables */}
         <div className="space-y-8">
-          {(activeMarket === 'crypto' || activeMarket === 'both') && (
+          {(activeMarket === "crypto" || activeMarket === "both") && (
             <div>
               <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
                 <span className="mr-2">₿</span> Cryptocurrency Markets
@@ -152,7 +166,7 @@ export default function DashboardPage() {
             </div>
           )}
 
-          {(activeMarket === 'stocks' || activeMarket === 'both') && (
+          {(activeMarket === "stocks" || activeMarket === "both") && (
             <div>
               <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
                 <span className="mr-2">$</span> Stock Markets

@@ -3,13 +3,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { createChart, ColorType, IChartApi } from 'lightweight-charts';
 
-interface CryptoChartProps {
+interface StockChartProps {
   symbol: string;
 }
 
 type Timeframe = '1s' | '1m' | '5m' | '15m' | '1h' | '1d';
 
-export default function CryptoChart({ symbol }: CryptoChartProps) {
+export default function StockChart({ symbol }: StockChartProps) {
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const [timeframe, setTimeframe] = useState<Timeframe>('1h');
@@ -56,32 +56,80 @@ export default function CryptoChart({ symbol }: CryptoChartProps) {
       setIsLoading(true);
       setError(null);
       try {
-        // Binance API expects uppercase symbol and 'USDT' suffix for most pairs
-        const pair = `${symbol.toUpperCase()}USDT`;
+        // Map timeframe to Yahoo Finance interval
+        const intervalMap: Record<Timeframe, string> = {
+          '1s': '1m', // Yahoo doesn't support 1s, use 1m
+          '1m': '1m',
+          '5m': '5m',
+          '15m': '15m',
+          '1h': '1h',
+          '1d': '1d',
+        };
+        
+        const interval = intervalMap[timeframe];
+        
+        // Calculate date range for ~200 candles
+        // Use a multiplier to account for non-trading hours, weekends, and holidays
+        const now = Math.floor(Date.now() / 1000);
+        const secondsPerCandle =
+          interval === '1m' ? 60
+          : interval === '5m' ? 300
+          : interval === '15m' ? 900
+          : interval === '1h' ? 3600
+          : interval === '1d' ? 86400
+          : 60;
+        
+        // Request extra time to account for market closures (weekends, holidays, after-hours)
+        // Grouped by interval type: short (1s/1m/5m), medium (15m), long (1h/1d)
+        const multiplier = 
+          interval === '1m' ? 5    // Short intervals: 5x multiplier
+          : interval === '5m' ? 5  // Short intervals: 5x multiplier
+          : interval === '15m' ? 4 // Medium interval: 4x multiplier
+          : interval === '1h' ? 1.2  // Long intervals: 1.2x multiplier
+          : interval === '1d' ? 1.2  // Long intervals: 1.2x multiplier
+          : 1;
+        
+        const period1 = now - (secondsPerCandle * 200 * multiplier);
+        const period2 = now;
+        
+        // Use local API proxy to avoid CORS issues
         const response = await fetch(
-          `https://api.binance.com/api/v3/klines?symbol=${pair}&interval=${timeframe}&limit=300`
+          `/api/stock-chart?symbol=${symbol}&interval=${interval}&period1=${period1}&period2=${period2}`
         );
-
+        
         if (!response.ok) {
-          throw new Error('Failed to fetch chart data');
+          throw new Error(`Failed to fetch stock chart data (${response.status})`);
         }
-
+        
         const data = await response.json();
         
-        // Transform Binance data [time, open, high, low, close, volume, ...]
-        // to lightweight-charts format { time, open, high, low, close }
-        const candleData = data.map((d: any) => ({
-          time: d[0] / 1000, // Convert ms to seconds
-          open: parseFloat(d[1]),
-          high: parseFloat(d[2]),
-          low: parseFloat(d[3]),
-          close: parseFloat(d[4]),
-        }));
-
+        if (!data?.chart?.result?.[0]) {
+          throw new Error('No data available for this symbol');
+        }
+        
+        const result = data.chart.result[0];
+        const timestamps = result.timestamp;
+        const quote = result.indicators.quote[0];
+        
+        if (!timestamps || !quote) {
+          throw new Error('Invalid data format');
+        }
+        
+        // Transform to lightweight-charts format
+        const candleData = timestamps.map((t: number, i: number) => ({
+          time: t,
+          open: quote.open[i] ?? 0,
+          high: quote.high[i] ?? 0,
+          low: quote.low[i] ?? 0,
+          close: quote.close[i] ?? 0,
+        })).filter((candle: any) => 
+          candle.open > 0 && candle.high > 0 && candle.low > 0 && candle.close > 0
+        );
+        
         newSeries.setData(candleData);
-      } catch (err) {
-        console.error('Error fetching chart data:', err);
-        setError('Failed to load chart data. Make sure the pair exists on Binance.');
+      } catch (err: any) {
+        console.error('Error fetching stock chart data:', err);
+        setError(`Failed to load chart data: ${err.message}`);
       } finally {
         setIsLoading(false);
       }
@@ -90,7 +138,6 @@ export default function CryptoChart({ symbol }: CryptoChartProps) {
     fetchData();
 
     window.addEventListener('resize', handleResize);
-
     return () => {
       window.removeEventListener('resize', handleResize);
       chart.remove();
@@ -107,9 +154,7 @@ export default function CryptoChart({ symbol }: CryptoChartProps) {
               key={tf}
               onClick={() => setTimeframe(tf)}
               className={`px-3 py-1 rounded-md text-sm font-medium transition ${
-                timeframe === tf
-                  ? 'bg-gray-900 text-white'
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+                timeframe === tf ? 'bg-gray-900 text-white' : 'text-gray-400 hover:text-white hover:bg-white/5'
               }`}
             >
               {tf}
@@ -117,20 +162,17 @@ export default function CryptoChart({ symbol }: CryptoChartProps) {
           ))}
         </div>
       </div>
-
       <div className="relative h-[400px] w-full">
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-10 backdrop-blur-sm rounded-lg">
             <div className="text-blue-400 animate-pulse">Loading chart data...</div>
           </div>
         )}
-        
         {error && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-10 backdrop-blur-sm rounded-lg">
             <div className="text-red-400">{error}</div>
           </div>
         )}
-
         <div ref={chartContainerRef} className="w-full h-full" />
       </div>
     </div>

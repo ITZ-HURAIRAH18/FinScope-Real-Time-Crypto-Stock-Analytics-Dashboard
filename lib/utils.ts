@@ -85,3 +85,20 @@ export function debounce<T extends (...args: any[]) => any>(
     timeout = setTimeout(() => func(...args), wait);
   };
 }
+export function getFinnhubResolution(timeframe: string): string {
+  switch (timeframe) {
+    case '1s':
+    case '1m':
+      return '1'; // 1 minute resolution
+    case '5m':
+      return '5';
+    case '15m':
+      return '15';
+    case '1h':
+      return '60';
+    case '1d':
+      return 'D';
+    default:
+      return '1';
+  }
+}

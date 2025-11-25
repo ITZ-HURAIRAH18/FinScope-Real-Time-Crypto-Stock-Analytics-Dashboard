@@ -6,6 +6,7 @@ import { useAppSelector } from '@/store/hooks';
 import { formatCurrency, formatPercentage, getPriceChangeColor } from '@/lib/utils';
 import WatchlistButton from '@/components/watchlist/WatchlistButton';
 import AuthButton from '@/components/auth/AuthButton';
+import StockChart from '@/components/stock/StockChart';
 import LoadingScreen from '@/components/LoadingScreen';
 
 export default function StockDetailPage() {
@@ -16,9 +17,7 @@ export default function StockDetailPage() {
   const { stockPrices } = useAppSelector((state) => state.market);
   const priceData = stockPrices[symbol];
 
-  if (!priceData) {
-    return <LoadingScreen />;
-  }
+  // Show page immediately, don't wait for Redux data
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900">
@@ -75,17 +74,22 @@ export default function StockDetailPage() {
               </div>
             </div>
 
-            <div className="text-left md:text-right">
-              <div className="text-4xl font-bold text-white font-mono mb-2">
-                {formatCurrency(priceData.price)}
+            {priceData && (
+              <div className="text-left md:text-right">
+                <div className="text-4xl font-bold text-white font-mono mb-2">
+                  {formatCurrency(priceData.price)}
+                </div>
+                <div className={`text-2xl font-semibold ${getPriceChangeColor(priceData.priceChangePercent)}`}>
+                  {formatPercentage(priceData.priceChangePercent)}
+                  <span className="text-lg ml-2">({formatCurrency(priceData.priceChange)})</span>
+                </div>
               </div>
-              <div className={`text-2xl font-semibold ${getPriceChangeColor(priceData.priceChangePercent)}`}>
-                {formatPercentage(priceData.priceChangePercent)}
-                <span className="text-lg ml-2">({formatCurrency(priceData.priceChange)})</span>
-              </div>
-            </div>
+            )}
           </div>
         </div>
+
+        {/* Chart Section */}
+        <StockChart symbol={symbol} />
 
         {/* Stats Grid */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
