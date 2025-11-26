@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   setActiveMarket,
@@ -17,8 +18,17 @@ import LoadingScreen from "@/components/LoadingScreen";
 
 export default function DashboardPage() {
   const dispatch = useAppDispatch();
+  const searchParams = useSearchParams();
   const { activeMarket, searchQuery } = useAppSelector((state) => state.market);
   const [isInitialized, setIsInitialized] = useState(false);
+
+  // Handle URL parameter for tab selection
+  useEffect(() => {
+    const tab = searchParams.get('tab');
+    if (tab === 'crypto' || tab === 'stocks' || tab === 'both') {
+      dispatch(setActiveMarket(tab));
+    }
+  }, [searchParams, dispatch]);
 
   useEffect(() => {
     // Initialize WebSocket connections

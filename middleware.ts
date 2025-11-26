@@ -15,7 +15,14 @@ export default withAuth(
   }
 );
 
-// Protect these routes
+// Protect these routes - require authentication
 export const config = {
-  matcher: ['/watchlist/:path*', '/api/watchlist/:path*'],
+  matcher: [
+    '/dashboard/:path*',
+    '/analytics/:path*',
+    '/watchlist/:path*',
+    '/profile/:path*',
+    '/api/watchlist/:path*',
+    '/api/profile/:path*'
+  ],
 };

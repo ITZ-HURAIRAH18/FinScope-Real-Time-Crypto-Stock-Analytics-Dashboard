@@ -1,7 +1,8 @@
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
+import ProfileDropdown from "./ProfileDropdown";
 
 export default function AuthButton() {
   const { data: session, status } = useSession();
@@ -11,14 +12,7 @@ export default function AuthButton() {
   }
 
   if (session) {
-    return (
-      <button
-        onClick={() => signOut({ callbackUrl: "/" })}
-        className="px-4 py-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 transition font-medium"
-      >
-        Logout
-      </button>
-    );
+    return <ProfileDropdown />;
   }
 
   return (
