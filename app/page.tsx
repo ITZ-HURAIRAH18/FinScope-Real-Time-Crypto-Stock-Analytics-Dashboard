@@ -172,7 +172,7 @@ export default function HomePage() {
             Markets at a Glance
           </h2>
           <p className="text-gray-400 text-lg">
-            See what's moving in crypto and stock markets
+            See what&apos;s moving in crypto and stock markets
           </p>
         </div>
 

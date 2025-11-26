@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
   setActiveMarket,
@@ -79,24 +80,24 @@ export default function DashboardPage() {
 
             {/* Navigation */}
             <nav className="flex items-center space-x-6">
-              <a href="/" className="text-gray-300 hover:text-white transition">
+              <Link href="/" className="text-gray-300 hover:text-white transition">
                 Home
-              </a>
-              <a href="/dashboard" className="text-white font-semibold">
+              </Link>
+              <Link href="/dashboard" className="text-white font-semibold">
                 Markets
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/analytics"
                 className="text-gray-300 hover:text-white transition"
               >
                 Analytics
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/watchlist"
                 className="text-gray-300 hover:text-white transition"
               >
                 Watchlist
-              </a>
+              </Link>
               <AuthButton />
             </nav>
           </div>

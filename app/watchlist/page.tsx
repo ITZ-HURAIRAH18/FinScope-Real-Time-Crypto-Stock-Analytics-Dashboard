@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useAppSelector } from '@/store/hooks';
 import { formatCurrency, formatPercentage, getPriceChangeColor } from '@/lib/utils';
 import AuthButton from '@/components/auth/AuthButton';
@@ -86,10 +87,10 @@ export default function WatchlistPage() {
               <span className="text-2xl font-bold gradient-text">FinScope</span>
             </div>
             <nav className="flex items-center space-x-6">
-              <a href="/" className="text-gray-300 hover:text-white transition">Home</a>
-              <a href="/dashboard" className="text-gray-300 hover:text-white transition">Markets</a>
-              <a href="/analytics" className="text-gray-300 hover:text-white transition">Analytics</a>
-              <a href="/watchlist" className="text-white font-semibold">Watchlist</a>
+              <Link href="/" className="text-gray-300 hover:text-white transition">Home</Link>
+              <Link href="/dashboard" className="text-gray-300 hover:text-white transition">Markets</Link>
+              <Link href="/analytics" className="text-gray-300 hover:text-white transition">Analytics</Link>
+              <Link href="/watchlist" className="text-white font-semibold">Watchlist</Link>
               {/* {session?.user && (
                 <div className="text-gray-300">{session.user.email}</div>
               )} */}

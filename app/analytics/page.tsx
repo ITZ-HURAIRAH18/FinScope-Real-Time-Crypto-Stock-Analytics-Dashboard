@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { binanceWS } from '@/lib/binance-websocket';
 import { getFinnhubWS } from '@/lib/finnhub-websocket';
@@ -67,10 +68,10 @@ export default function AnalyticsPage() {
               <span className="text-2xl font-bold gradient-text">FinScope</span>
             </div>
             <nav className="flex items-center space-x-6">
-              <a href="/" className="text-gray-300 hover:text-white transition">Home</a>
-              <a href="/dashboard" className="text-gray-300 hover:text-white transition">Markets</a>
-              <a href="/analytics" className="text-white font-semibold">Analytics</a>
-              <a href="/watchlist" className="text-gray-300 hover:text-white transition">Watchlist</a>
+              <Link href="/" className="text-gray-300 hover:text-white transition">Home</Link>
+              <Link href="/dashboard" className="text-gray-300 hover:text-white transition">Markets</Link>
+              <Link href="/analytics" className="text-white font-semibold">Analytics</Link>
+              <Link href="/watchlist" className="text-gray-300 hover:text-white transition">Watchlist</Link>
               <AuthButton />
             </nav>
           </div>
