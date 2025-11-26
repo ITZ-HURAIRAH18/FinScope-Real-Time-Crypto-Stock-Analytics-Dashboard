@@ -1,7 +1,53 @@
+"use client";
+
+import { useEffect } from "react";
 import Link from "next/link";
 import AuthButton from "@/components/auth/AuthButton";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { updateCryptoPrices, updateStockPrices } from "@/store/slices/marketSlice";
+import { binanceWS } from "@/lib/binance-websocket";
+import { getFinnhubWS } from "@/lib/finnhub-websocket";
+import { formatCurrency, formatPercentage, getPriceChangeColor } from "@/lib/utils";
 
 export default function HomePage() {
+  const dispatch = useAppDispatch();
+  const { cryptoPrices, stockPrices } = useAppSelector((state) => state.market);
+
+  useEffect(() => {
+    // Initialize WebSocket connections
+    console.log("Homepage: Initializing WebSocket connections...");
+
+    // Connect to Binance for crypto
+    binanceWS.connect();
+    const unsubBinance = binanceWS.subscribe((prices) => {
+      dispatch(updateCryptoPrices(prices));
+    });
+
+    // Connect to Finnhub for stocks
+    const finnhubAPIKey = process.env.NEXT_PUBLIC_FINNHUB_API_KEY || "";
+    const finnhubWS = getFinnhubWS(finnhubAPIKey);
+    finnhubWS.connect();
+    const unsubFinnhub = finnhubWS.subscribe((prices) => {
+      dispatch(updateStockPrices(prices));
+    });
+
+    // Cleanup
+    return () => {
+      unsubBinance();
+      unsubFinnhub();
+      binanceWS.disconnect();
+      finnhubWS.disconnect();
+    };
+  }, [dispatch]);
+
+  // Market preview data
+  const cryptoSymbols = [
+    { name: 'Bitcoin', symbol: 'BTC' },
+    { name: 'Ethereum', symbol: 'ETH' },
+    { name: 'Binance Coin', symbol: 'BNB' }
+  ];
+
+  const stockSymbols = ['AAPL', 'GOOGL', 'TSLA'];
   return (
     <main className="min-h-screen bg-black">
       {/* Header */}
@@ -137,15 +183,24 @@ export default function HomePage() {
               <span className="mr-2">₿</span> Cryptocurrency
             </h3>
             <div className="space-y-4">
-              {['Bitcoin', 'Ethereum', 'Binance Coin'].map((crypto, i) => (
-                <div key={i} className="flex items-center justify-between">
-                  <span className="text-gray-300">{crypto}</span>
-                  <div className="flex items-center space-x-4">
-                    <span className="text-white font-mono">Loading...</span>
-                    <span className="price-positive">+0.00%</span>
+              {cryptoSymbols.map(({ name, symbol }) => {
+                const priceData = cryptoPrices[symbol];
+                return (
+                  <div key={symbol} className="flex items-center justify-between">
+                    <span className="text-gray-300">{name}</span>
+                    <div className="flex items-center space-x-4">
+                      <span className="text-white font-mono">
+                        {priceData ? formatCurrency(priceData.price) : 'Loading...'}
+                      </span>
+                      {priceData && (
+                        <span className={`font-semibold ${getPriceChangeColor(priceData.priceChangePercent24h)}`}>
+                          {formatPercentage(priceData.priceChangePercent24h)}
+                        </span>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <Link
               href="/dashboard?tab=crypto"
@@ -161,15 +216,24 @@ export default function HomePage() {
               <span className="mr-2">📈</span> Stocks
             </h3>
             <div className="space-y-4">
-              {['AAPL', 'GOOGL', 'TSLA'].map((stock, i) => (
-                <div key={i} className="flex items-center justify-between">
-                  <span className="text-gray-300">{stock}</span>
-                  <div className="flex items-center space-x-4">
-                    <span className="text-white font-mono">Loading...</span>
-                    <span className="price-positive">+0.00%</span>
+              {stockSymbols.map((symbol) => {
+                const priceData = stockPrices[symbol];
+                return (
+                  <div key={symbol} className="flex items-center justify-between">
+                    <span className="text-gray-300">{symbol}</span>
+                    <div className="flex items-center space-x-4">
+                      <span className="text-white font-mono">
+                        {priceData ? formatCurrency(priceData.price) : 'Loading...'}
+                      </span>
+                      {priceData && (
+                        <span className={`font-semibold ${getPriceChangeColor(priceData.priceChangePercent)}`}>
+                          {formatPercentage(priceData.priceChangePercent)}
+                        </span>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
             <Link
               href="/dashboard?tab=stocks"
