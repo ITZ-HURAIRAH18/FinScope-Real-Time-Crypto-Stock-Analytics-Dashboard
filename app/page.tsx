@@ -182,16 +182,25 @@ export default function HomePage() {
             <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
               <span className="mr-2">₿</span> Cryptocurrency
             </h3>
-            <div className="space-y-4">
+            
+            {/* Table Header */}
+            <div className="grid grid-cols-3 gap-4 pb-3 border-b border-white/10 mb-4">
+              <div className="text-gray-400 text-sm font-semibold">Symbol</div>
+              <div className="text-gray-400 text-sm font-semibold text-right">Price</div>
+              <div className="text-gray-400 text-sm font-semibold text-right">24h Change</div>
+            </div>
+            
+            {/* Table Rows */}
+            <div className="space-y-3">
               {cryptoSymbols.map(({ name, symbol }) => {
                 const priceData = cryptoPrices[symbol];
                 return (
-                  <div key={symbol} className="flex items-center justify-between">
-                    <span className="text-gray-300">{name}</span>
-                    <div className="flex items-center space-x-4">
-                      <span className="text-white font-mono">
-                        {priceData ? formatCurrency(priceData.price) : 'Loading...'}
-                      </span>
+                  <div key={symbol} className="grid grid-cols-3 gap-4 items-center py-1">
+                    <div className="text-white font-medium">{name}</div>
+                    <div className="text-white font-mono text-right">
+                      {priceData ? formatCurrency(priceData.price) : 'Loading...'}
+                    </div>
+                    <div className="text-right">
                       {priceData && (
                         <span className={`font-semibold ${getPriceChangeColor(priceData.priceChangePercent24h)}`}>
                           {formatPercentage(priceData.priceChangePercent24h)}
@@ -202,6 +211,7 @@ export default function HomePage() {
                 );
               })}
             </div>
+            
             <Link
               href="/dashboard?tab=crypto"
               className="mt-6 block text-center text-blue-400 hover:text-blue-300 transition"
@@ -215,16 +225,25 @@ export default function HomePage() {
             <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
               <span className="mr-2">📈</span> Stocks
             </h3>
-            <div className="space-y-4">
+            
+            {/* Table Header */}
+            <div className="grid grid-cols-3 gap-4 pb-3 border-b border-white/10 mb-4">
+              <div className="text-gray-400 text-sm font-semibold">Symbol</div>
+              <div className="text-gray-400 text-sm font-semibold text-right">Price</div>
+              <div className="text-gray-400 text-sm font-semibold text-right">Change</div>
+            </div>
+            
+            {/* Table Rows */}
+            <div className="space-y-3">
               {stockSymbols.map((symbol) => {
                 const priceData = stockPrices[symbol];
                 return (
-                  <div key={symbol} className="flex items-center justify-between">
-                    <span className="text-gray-300">{symbol}</span>
-                    <div className="flex items-center space-x-4">
-                      <span className="text-white font-mono">
-                        {priceData ? formatCurrency(priceData.price) : 'Loading...'}
-                      </span>
+                  <div key={symbol} className="grid grid-cols-3 gap-4 items-center py-1">
+                    <div className="text-white font-medium">{symbol}</div>
+                    <div className="text-white font-mono text-right">
+                      {priceData ? formatCurrency(priceData.price) : 'Loading...'}
+                    </div>
+                    <div className="text-right">
                       {priceData && (
                         <span className={`font-semibold ${getPriceChangeColor(priceData.priceChangePercent)}`}>
                           {formatPercentage(priceData.priceChangePercent)}
@@ -235,6 +254,7 @@ export default function HomePage() {
                 );
               })}
             </div>
+            
             <Link
               href="/dashboard?tab=stocks"
               className="mt-6 block text-center text-blue-400 hover:text-blue-300 transition "
