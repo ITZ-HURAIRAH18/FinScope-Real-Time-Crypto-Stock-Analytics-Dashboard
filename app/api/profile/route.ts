@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
+import { uploadToCloudinary, deleteFromCloudinary } from "@/lib/cloudinary";
 
 // GET /api/profile - Get user profile
 export async function GET() {
@@ -50,9 +51,11 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
     const { name, image } = body;
 
-    // Validate image if provided
+    let imageUrl = undefined;
+
+    // Handle image upload to Cloudinary
     if (image) {
-      // Check if it's a valid base64 image
+      // Validate image format
       const base64Regex = /^data:image\/(png|jpg|jpeg|gif);base64,/;
       if (!base64Regex.test(image)) {
         return NextResponse.json(
@@ -61,11 +64,25 @@ export async function PUT(request: NextRequest) {
         );
       }
 
-      // Check image size (base64 string length, rough estimate: 2MB = ~2.7M chars)
-      if (image.length > 3000000) {
+      try {
+        // Get current user to check for existing image
+        const currentUser = await prisma.user.findUnique({
+          where: { email: session.user.email },
+          select: { image: true },
+        });
+
+        // Delete old image from Cloudinary if exists
+        if (currentUser?.image && currentUser.image.includes('cloudinary.com')) {
+          await deleteFromCloudinary(currentUser.image);
+        }
+
+        // Upload new image to Cloudinary
+        imageUrl = await uploadToCloudinary(image);
+      } catch (error) {
+        console.error("Cloudinary upload error:", error);
         return NextResponse.json(
-          { error: "Image too large (max 2MB)" },
-          { status: 400 }
+          { error: "Failed to upload image" },
+          { status: 500 }
         );
       }
     }
@@ -77,7 +94,7 @@ export async function PUT(request: NextRequest) {
       },
       data: {
         ...(name !== undefined && { name }),
-        ...(image !== undefined && { image }),
+        ...(imageUrl !== undefined && { image: imageUrl }),
       },
       select: {
         id: true,
@@ -96,3 +113,4 @@ export async function PUT(request: NextRequest) {
     );
   }
 }
+
