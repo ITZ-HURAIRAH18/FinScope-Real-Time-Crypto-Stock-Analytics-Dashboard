@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
@@ -13,20 +12,17 @@ import TransactionHistory from '@/components/trading/TransactionHistory';
 
 export default function PortfolioPage() {
   const { data: session, status } = useSession();
-  const router = useRouter();
   const dispatch = useAppDispatch();
   const { holdings, loading } = useAppSelector((state) => state.portfolio);
   const { cryptoPrices, stockPrices } = useAppSelector((state) => state.market);
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/auth/login');
-    } else if (session?.user) {
+    if (session?.user) {
       dispatch(fetchPortfolio());
     }
-  }, [status, session, dispatch, router]);
+  }, [session, dispatch]);
 
-  if (status === 'loading' || !session) {
+  if (status === 'loading') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center">
         <div className="text-white text-xl">Loading...</div>

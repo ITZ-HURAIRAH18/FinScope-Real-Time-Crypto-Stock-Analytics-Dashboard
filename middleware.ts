@@ -21,8 +21,10 @@ export const config = {
     '/dashboard/:path*',
     '/analytics/:path*',
     '/watchlist/:path*',
+    '/portfolio/:path*',
     '/profile/:path*',
     '/api/watchlist/:path*',
-    '/api/profile/:path*'
+    '/api/profile/:path*',
+    '/api/portfolio/:path*',
   ],
 };
