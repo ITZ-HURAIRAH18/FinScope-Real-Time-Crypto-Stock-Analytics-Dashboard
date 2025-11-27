@@ -98,6 +98,12 @@ export default function DashboardPage() {
               >
                 Watchlist
               </Link>
+              <Link
+                href="/portfolio"
+                className="text-gray-300 hover:text-white transition"
+              >
+                Portfolio
+              </Link>
               <AuthButton />
             </nav>
           </div>
