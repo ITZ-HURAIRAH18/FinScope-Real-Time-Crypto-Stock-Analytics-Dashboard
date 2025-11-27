@@ -2,11 +2,10 @@
 
 import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
+import Header from '@/components/Header';
 import { useAppSelector } from '@/store/hooks';
 import { formatCurrency, formatPercentage, getPriceChangeColor, formatLargeNumber } from '@/lib/utils';
 import WatchlistButton from '@/components/watchlist/WatchlistButton';
-import AuthButton from '@/components/auth/AuthButton';
 import CryptoChart from '@/components/crypto/CryptoChart';
 import LoadingScreen from '@/components/LoadingScreen';
 import TradingPanel from '@/components/trading/TradingPanel';
@@ -27,25 +26,7 @@ export default function CryptoDetailPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
       {/* Header */}
-      <header className="border-b border-white/10 backdrop-blur-sm bg-black/20 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">F</span>
-              </div>
-              <span className="text-2xl font-bold gradient-text">FinScope</span>
-            </div>
-            <nav className="flex items-center space-x-6">
-              <Link href="/" className="text-gray-300 hover:text-white transition">Home</Link>
-              <Link href="/dashboard" className="text-gray-300 hover:text-white transition">Markets</Link>
-              <Link href="/analytics" className="text-gray-300 hover:text-white transition">Analytics</Link>
-              <Link href="/watchlist" className="text-gray-300 hover:text-white transition">Watchlist</Link>
-              <AuthButton />
-            </nav>
-          </div>
-        </div>
-      </header>
+      <Header activePage="markets" />
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
