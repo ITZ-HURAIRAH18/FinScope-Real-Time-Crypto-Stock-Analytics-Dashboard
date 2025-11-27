@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import AuthButton from "@/components/auth/AuthButton";
+import Header from "@/components/Header";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { updateCryptoPrices, updateStockPrices } from "@/store/slices/marketSlice";
 import { binanceWS } from "@/lib/binance-websocket";
@@ -51,25 +51,7 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-black">
       {/* Header */}
-      <header className="border-b border-white/10 backdrop-blur-sm bg-black/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">F</span>
-            </div>
-            <span className="text-2xl font-bold gradient-text">FinScope</span>
-          </div>
-          <nav className="flex items-center space-x-6">
-            <Link href="/dashboard" className="text-gray-300 hover:text-white transition">
-              Markets
-            </Link>
-            <Link href="/analytics" className="text-gray-300 hover:text-white transition">
-              Analytics
-            </Link>
-            <AuthButton />
-          </nav>
-        </div>
-      </header>
+      <Header activePage="home" />
 
       {/* Hero Section */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
