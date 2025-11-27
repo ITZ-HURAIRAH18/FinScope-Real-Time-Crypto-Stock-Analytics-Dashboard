@@ -102,9 +102,9 @@ export default function TradingPanel({ symbol, type, currentPrice }: TradingPane
 
   if (!session) {
     return (
-      <div className="glass-card p-8 rounded-2xl border border-white/20 mb-8">
+      <div className="glass-card p-4 sm:p-6 lg:p-8 rounded-2xl border border-white/20 mb-8">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">Trading</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-white mb-4">Trading</h2>
           <p className="text-gray-400 mb-4">Please log in to start trading</p>
           <a
             href="/auth/login"
@@ -118,14 +118,14 @@ export default function TradingPanel({ symbol, type, currentPrice }: TradingPane
   }
 
   return (
-    <div className="glass-card p-6 rounded-2xl border border-white/20 mb-8">
-      <h2 className="text-2xl font-bold text-white mb-6">Trade {symbol}</h2>
+    <div className="glass-card p-4 sm:p-6 lg:p-8 rounded-2xl border border-white/20 mb-8">
+      <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6">Trade {symbol}</h2>
 
       {/* Buy/Sell Tabs */}
-      <div className="flex mb-6 bg-black/30 rounded-lg p-1">
+      <div className="flex mb-4 sm:mb-6 bg-black/30 rounded-lg p-1">
         <button
           onClick={() => setActiveTab('buy')}
-          className={`flex-1 py-3 rounded-lg font-semibold transition ${
+          className={`flex-1 py-2 sm:py-3 rounded-lg text-sm sm:text-base font-semibold transition ${
             activeTab === 'buy'
               ? 'bg-green-500 text-white'
               : 'text-gray-400 hover:text-white'
@@ -135,7 +135,7 @@ export default function TradingPanel({ symbol, type, currentPrice }: TradingPane
         </button>
         <button
           onClick={() => setActiveTab('sell')}
-          className={`flex-1 py-3 rounded-lg font-semibold transition ${
+          className={`flex-1 py-2 sm:py-3 rounded-lg text-sm sm:text-base font-semibold transition ${
             activeTab === 'sell'
               ? 'bg-red-500 text-white'
               : 'text-gray-400 hover:text-white'
@@ -146,19 +146,19 @@ export default function TradingPanel({ symbol, type, currentPrice }: TradingPane
       </div>
 
       {/* Current Info */}
-      <div className="mb-6 space-y-3">
+      <div className="mb-4 sm:mb-6 space-y-2 sm:space-y-3">
         <div className="flex justify-between items-center">
-          <span className="text-gray-400">Current Price</span>
-          <span className="text-white font-mono font-semibold">{formatCurrency(currentPrice)}</span>
+          <span className="text-sm sm:text-base text-gray-400">Current Price</span>
+          <span className="text-sm sm:text-base text-white font-mono font-semibold">{formatCurrency(currentPrice)}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-gray-400">Available Balance</span>
-          <span className="text-white font-mono font-semibold">{formatCurrency(balance)}</span>
+          <span className="text-sm sm:text-base text-gray-400">Available Balance</span>
+          <span className="text-sm sm:text-base text-white font-mono font-semibold">{formatCurrency(balance)}</span>
         </div>
         {currentHolding && (
           <div className="flex justify-between items-center">
-            <span className="text-gray-400">Your Holdings</span>
-            <span className="text-white font-mono font-semibold">
+            <span className="text-sm sm:text-base text-gray-400">Your Holdings</span>
+            <span className="text-sm sm:text-base text-white font-mono font-semibold">
               {currentHolding.quantity.toFixed(8)} {symbol}
             </span>
           </div>
@@ -186,10 +186,10 @@ export default function TradingPanel({ symbol, type, currentPrice }: TradingPane
       </div>
 
       {/* Total */}
-      <div className="mb-6 p-4 bg-black/30 rounded-lg">
+      <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-black/30 rounded-lg">
         <div className="flex justify-between items-center">
-          <span className="text-gray-400">Total</span>
-          <span className="text-2xl font-bold text-white font-mono">
+          <span className="text-sm sm:text-base text-gray-400">Total</span>
+          <span className="text-xl sm:text-2xl font-bold text-white font-mono">
             {formatCurrency(calculateTotal())}
           </span>
         </div>
@@ -212,7 +212,7 @@ export default function TradingPanel({ symbol, type, currentPrice }: TradingPane
         <button
           onClick={handleBuy}
           disabled={loading || !quantity || parseFloat(quantity) <= 0 || calculateTotal() > balance}
-          className="w-full py-4 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold rounded-lg hover:shadow-lg hover:shadow-green-500/50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-3 sm:py-4 text-sm sm:text-base bg-gradient-to-r from-green-500 to-green-600 text-white font-bold rounded-lg hover:shadow-lg hover:shadow-green-500/50 transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? 'Processing...' : `Buy ${symbol}`}
         </button>
@@ -226,7 +226,7 @@ export default function TradingPanel({ symbol, type, currentPrice }: TradingPane
             !currentHolding ||
             parseFloat(quantity) > currentHolding.quantity
           }
-          className="w-full py-4 bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-lg hover:shadow-lg hover:shadow-red-500/50 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-3 sm:py-4 text-sm sm:text-base bg-gradient-to-r from-red-500 to-red-600 text-white font-bold rounded-lg hover:shadow-lg hover:shadow-red-500/50 transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? 'Processing...' : `Sell ${symbol}`}
         </button>

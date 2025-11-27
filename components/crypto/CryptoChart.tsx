@@ -35,7 +35,7 @@ export default function CryptoChart({ symbol }: CryptoChartProps) {
         horzLines: { color: 'rgba(255, 255, 255, 0.1)' },
       },
       width: chartContainerRef.current.clientWidth,
-      height: 400,
+      height: window.innerWidth < 640 ? 300 : window.innerWidth < 1024 ? 400 : 500,
       timeScale: {
         timeVisible: true,
         secondsVisible: false,
@@ -101,15 +101,15 @@ export default function CryptoChart({ symbol }: CryptoChartProps) {
   }, [symbol, timeframe]);
 
   return (
-    <div className="glass-card p-6 rounded-2xl mb-8 border border-white">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-white">Price Chart</h2>
-        <div className="flex space-x-2 bg-white/5 rounded-lg p-1">
+    <div className="glass-card p-4 sm:p-6 rounded-2xl mb-8 border border-white">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <h2 className="text-xl sm:text-2xl font-bold text-white">Price Chart</h2>
+        <div className="flex flex-wrap gap-1 sm:space-x-2 sm:gap-0 bg-white/5 rounded-lg p-1">
           {(['1s', '1m', '5m', '15m', '1h', '1d'] as Timeframe[]).map((tf) => (
             <button
               key={tf}
               onClick={() => setTimeframe(tf)}
-              className={`px-3 py-1 rounded-md text-sm font-medium transition ${
+              className={`px-2 sm:px-3 py-1 rounded-md text-xs sm:text-sm font-medium transition ${
                 timeframe === tf
                   ? 'bg-gray-900 text-white'
                   : 'text-gray-400 hover:text-white hover:bg-white/5'
@@ -121,7 +121,7 @@ export default function CryptoChart({ symbol }: CryptoChartProps) {
         </div>
       </div>
 
-      <div className="relative h-[400px] w-full">
+      <div className="relative h-[300px] sm:h-[400px] lg:h-[500px] w-full">
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-10 backdrop-blur-sm rounded-lg">
             <div className="text-white animate-pulse">Loading chart data...</div>
