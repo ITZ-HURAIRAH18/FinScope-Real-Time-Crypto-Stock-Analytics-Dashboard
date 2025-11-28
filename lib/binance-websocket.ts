@@ -63,13 +63,19 @@ class BinanceWebSocketClient {
         }
       };
 
-      this.ws.onerror = (error) => {
-        console.error('[Binance WS] Error:', error);
+      this.ws.onerror = (event) => {
+        // WebSocket error events don't contain detailed error info
+        // The actual error will be captured in onclose event
+        console.warn('[Binance WS] Connection error occurred');
       };
 
-      this.ws.onclose = () => {
-        console.log('[Binance WS] Connection closed, reconnecting...');
-        this.scheduleReconnect();
+      this.ws.onclose = (event) => {
+        console.log(`[Binance WS] Connection closed (code: ${event.code}, reason: ${event.reason || 'No reason provided'})`);
+
+        // Only reconnect if it wasn't a normal closure
+        if (event.code !== 1000) {
+          this.scheduleReconnect();
+        }
       };
     } catch (error) {
       console.error('[Binance WS] Connection error:', error);
