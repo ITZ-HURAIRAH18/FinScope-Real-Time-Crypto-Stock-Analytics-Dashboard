@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Header from "@/components/Header";
 import NewsCard from "@/components/news/NewsCard";
@@ -8,7 +8,7 @@ import { NewsArticle } from "@/types/news";
 
 type CategoryType = "general" | "crypto" | "stock";
 
-export default function NewsPage() {
+function NewsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [articles, setArticles] = useState<NewsArticle[]>([]);
@@ -161,5 +161,46 @@ export default function NewsPage() {
         </div>
       </footer>
     </main>
+  );
+}
+
+export default function NewsPage() {
+  return (
+    <Suspense fallback={
+      <main className="min-h-screen bg-black">
+        <Header activePage="news" />
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12">
+          <div className="text-center space-y-6">
+            <h1 className="text-5xl md:text-6xl font-bold text-white">
+              Latest Market News
+            </h1>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Stay updated with the latest cryptocurrency, stock, and financial market news
+            </p>
+          </div>
+        </section>
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, index) => (
+              <div
+                key={index}
+                className="glass-card rounded-2xl overflow-hidden animate-pulse"
+              >
+                <div className="w-full h-48 bg-gray-700"></div>
+                <div className="p-6 space-y-3">
+                  <div className="h-4 bg-gray-700 rounded w-1/3"></div>
+                  <div className="h-6 bg-gray-700 rounded w-full"></div>
+                  <div className="h-6 bg-gray-700 rounded w-5/6"></div>
+                  <div className="h-4 bg-gray-700 rounded w-full"></div>
+                  <div className="h-4 bg-gray-700 rounded w-4/5"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+    }>
+      <NewsContent />
+    </Suspense>
   );
 }
