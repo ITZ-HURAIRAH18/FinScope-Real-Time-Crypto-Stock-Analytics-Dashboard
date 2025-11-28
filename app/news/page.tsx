@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Header from "@/components/Header";
 import NewsCard from "@/components/news/NewsCard";
 import { NewsArticle } from "@/types/news";
@@ -8,14 +9,20 @@ import { NewsArticle } from "@/types/news";
 type CategoryType = "general" | "crypto" | "stock";
 
 export default function NewsPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [articles, setArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeCategory, setActiveCategory] = useState<CategoryType>("general");
+  const [activeCategory, setActiveCategory] = useState<CategoryType>(
+    (searchParams.get("category") as CategoryType) || "general"
+  );
 
   useEffect(() => {
-    fetchNews(activeCategory);
-  }, [activeCategory]);
+    const category = (searchParams.get("category") as CategoryType) || "general";
+    setActiveCategory(category);
+    fetchNews(category);
+  }, [searchParams]);
 
   const fetchNews = async (category: CategoryType) => {
     try {
@@ -44,6 +51,10 @@ export default function NewsPage() {
     { id: "stock" as CategoryType, label: "Stock", icon: "📈" },
   ];
 
+  const handleCategoryChange = (category: CategoryType) => {
+    router.push(`/news?category=${category}`);
+  };
+
   return (
     <main className="min-h-screen bg-black">
       {/* Header */}
@@ -67,7 +78,7 @@ export default function NewsPage() {
           {categories.map((category) => (
             <button
               key={category.id}
-              onClick={() => setActiveCategory(category.id)}
+              onClick={() => handleCategoryChange(category.id)}
               className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
                 activeCategory === category.id
                   ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/50"
