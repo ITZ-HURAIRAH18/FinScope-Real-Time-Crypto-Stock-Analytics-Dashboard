@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['assets.coingecko.com', 'logo.clearbit.com'],
+    domains: ['assets.coingecko.com', 'logo.clearbit.com', 'static2.finnhub.io', 'image.cnbcfm.com', 'data.bloomberglp.com'],
   },
   webpack: (config) => {
     config.externals.push({

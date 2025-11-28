@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import AuthButton from "@/components/auth/AuthButton";
 
 interface HeaderProps {
-  activePage?: "home" | "markets" | "analytics" | "watchlist" | "portfolio" | "profile";
+  activePage?: "home" | "markets" | "analytics" | "news" | "watchlist" | "portfolio" | "profile";
 }
 
 export default function Header({ activePage = "home" }: HeaderProps) {
@@ -34,6 +34,7 @@ export default function Header({ activePage = "home" }: HeaderProps) {
     { href: "/", label: "Home", page: "home" },
     { href: "/dashboard", label: "Markets", page: "markets" },
     { href: "/analytics", label: "Analytics", page: "analytics" },
+    { href: "/news", label: "News", page: "news" },
     { href: "/watchlist", label: "Watchlist", page: "watchlist" },
     { href: "/portfolio", label: "Portfolio", page: "portfolio" },
   ];
