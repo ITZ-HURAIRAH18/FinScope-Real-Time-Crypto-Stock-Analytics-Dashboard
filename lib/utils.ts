@@ -6,13 +6,28 @@ export function cn(...inputs: ClassValue[]) {
 
 /**
  * Format number as currency
+ * Automatically adjusts decimal places for very small values
  */
 export function formatCurrency(value: number, currency: string = 'USD'): string {
+  // For very small values (less than 0.01), use more decimal places
+  let minimumFractionDigits = 2;
+  let maximumFractionDigits = 2;
+  
+  if (value < 0.01 && value > 0) {
+    // For values like 0.00004, show up to 8 decimal places
+    minimumFractionDigits = 2;
+    maximumFractionDigits = 8;
+  } else if (value < 1 && value > 0) {
+    // For values like 0.42, show up to 4 decimal places
+    minimumFractionDigits = 2;
+    maximumFractionDigits = 4;
+  }
+  
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency,
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits,
+    maximumFractionDigits,
   }).format(value);
 }
 
