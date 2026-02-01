@@ -4,7 +4,15 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-gray-400">
         <p>© 2026 FinScope. All rights reserved.</p>
         <p className="mt-2">
-          Developed by <span className="gradient-text font-semibold">M Abu Hurairah</span>
+          Developed by{' '}
+          <a 
+            href="https://itz-hurairah.vercel.app/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="gradient-text font-semibold hover:opacity-80 transition-opacity"
+          >
+            M Abu Hurairah
+          </a>
         </p>
       </div>
     </footer>
