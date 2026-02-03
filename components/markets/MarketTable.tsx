@@ -138,7 +138,9 @@ function MarketTable({ type }: MarketTableProps) {
                       ) : (
                         <>
                           <img
-                            src={`https://financialmodelingprep.com/image-stock/${item.symbol}.png`}
+                            src={`https://financialmodelingprep.com/image-stock/${
+                              item.symbol === 'OANDA:XAU_USD' ? 'GLD' : item.symbol
+                            }.png`}
                             alt={item.symbol}
                             className="w-8 h-8 rounded-full mr-3"
                             onError={(e) => {
@@ -160,8 +162,11 @@ function MarketTable({ type }: MarketTableProps) {
                       )}
                       <div>
                         <div className="text-white font-semibold">
-                          {item.symbol}
+                          {item.symbol === 'OANDA:XAU_USD' ? 'Gold' : item.symbol}
                         </div>
+                        {item.symbol === 'OANDA:XAU_USD' && (
+                          <div className="text-gray-500 text-xs mt-0.5">Spot</div>
+                        )}
                       </div>
                     </div>
                   </td>

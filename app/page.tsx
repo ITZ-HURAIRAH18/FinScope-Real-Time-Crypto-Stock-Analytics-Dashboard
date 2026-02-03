@@ -50,7 +50,7 @@ export default function HomePage() {
     { name: 'Solana', symbol: 'SOL' }
   ];
 
-  const stockSymbols = ['AAPL', 'GOOGL', 'TSLA', 'GLD', 'SLV'];
+  const stockSymbols = ['AAPL', 'GOOGL', 'TSLA', 'OANDA:XAU_USD', 'SLV'];
   return (
     <main className="min-h-screen bg-black">
       {/* Header */}
@@ -277,8 +277,12 @@ export default function HomePage() {
                 return (
                   <div key={symbol} className="flex items-center justify-between p-3 rounded-lg bg-white/5 hover:bg-white/10 transition">
                     <div>
-                      <div className="text-white font-semibold">{symbol}</div>
-                      <div className="text-gray-400 text-sm">Stock</div>
+                      <div className="text-white font-semibold">
+                        {symbol === 'OANDA:XAU_USD' ? 'Gold' : symbol}
+                      </div>
+                      <div className="text-gray-400 text-sm">
+                        {symbol === 'OANDA:XAU_USD' ? 'Spot' : 'Stock'}
+                      </div>
                     </div>
                     <div className="text-right">
                       <div className="text-white font-mono font-semibold">

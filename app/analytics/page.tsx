@@ -165,7 +165,9 @@ export default function AnalyticsPage() {
                       <div className="flex items-center space-x-3">
                         <div className="text-gray-400 font-semibold">#{index + 1}</div>
                         <div>
-                          <div className="text-white font-semibold">{stock.symbol}</div>
+                          <div className="text-white font-semibold">
+                            {stock.symbol === 'OANDA:XAU_USD' ? 'Gold' : stock.symbol}
+                          </div>
                           <div className="text-sm text-gray-400">{formatCurrency(stock.price)}</div>
                         </div>
                       </div>
@@ -196,7 +198,9 @@ export default function AnalyticsPage() {
                       <div className="flex items-center space-x-3">
                         <div className="text-gray-400 font-semibold">#{index + 1}</div>
                         <div>
-                          <div className="text-white font-semibold">{stock.symbol}</div>
+                          <div className="text-white font-semibold">
+                            {stock.symbol === 'OANDA:XAU_USD' ? 'Gold' : stock.symbol}
+                          </div>
                           <div className="text-sm text-gray-400">{formatCurrency(stock.price)}</div>
                         </div>
                       </div>

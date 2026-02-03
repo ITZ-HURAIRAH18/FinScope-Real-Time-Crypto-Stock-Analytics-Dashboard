@@ -31,7 +31,7 @@ class FinnhubWebSocketClient {
     'AMD',
     'NFLX',
     'DIS',
-    'GLD', // Gold
+    'OANDA:XAU_USD', // Gold Spot
     'SLV', // Silver
   ];
 
