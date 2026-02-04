@@ -14,9 +14,15 @@ export async function GET(request: NextRequest) {
     );
   }
 
+  // Map symbols if necessary (Finnhub -> Yahoo)
+  let querySymbol = symbol;
+  if (symbol === 'OANDA:XAU_USD') {
+    querySymbol = 'GC=F'; // Gold Futures
+  }
+
   try {
     const response = await fetch(
-      `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=${interval}&period1=${period1}&period2=${period2}`,
+      `https://query1.finance.yahoo.com/v8/finance/chart/${querySymbol}?interval=${interval}&period1=${period1}&period2=${period2}`,
       {
         headers: {
           'User-Agent': 'Mozilla/5.0',
