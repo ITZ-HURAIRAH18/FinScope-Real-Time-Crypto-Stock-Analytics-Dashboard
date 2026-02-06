@@ -24,10 +24,8 @@ export default function CleanupTrigger() {
       }
     };
 
-    // Trigger after a short delay to not block initial render
-    const timer = setTimeout(triggerCleanup, 2000);
-
-    return () => clearTimeout(timer);
+    // Trigger immediately on mount
+    triggerCleanup();
   }, []);
 
   return null; // This component doesn't render anything
