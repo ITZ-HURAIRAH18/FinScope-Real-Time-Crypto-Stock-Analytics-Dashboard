@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import Footer from "@/components/Footer";
-import CleanupTrigger from "@/components/CleanupTrigger";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +21,6 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={inter.className}>
         <Providers>
-          <CleanupTrigger />
           {children}
           <Footer />
         </Providers>
