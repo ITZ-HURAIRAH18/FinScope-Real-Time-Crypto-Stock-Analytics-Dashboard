@@ -17,6 +17,33 @@ export default function OTPVerification({ email, mode = 'signup' }: OTPVerificat
   const [isLoading, setIsLoading] = useState(false);
   const [isResending, setIsResending] = useState(false);
   const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
+  const [isFetchingTime, setIsFetchingTime] = useState(true);
+
+  // Fetch actual remaining time from database on mount
+  useEffect(() => {
+    const fetchRemainingTime = async () => {
+      try {
+        console.log('Fetching remaining time for email:', email);
+        const response = await fetch(`/api/auth/verify-email?email=${encodeURIComponent(email)}`);
+        const data = await response.json();
+        
+        console.log('API Response:', { status: response.status, data });
+        
+        if (response.ok && data.remainingSeconds !== undefined) {
+          console.log('Setting timeLeft to:', data.remainingSeconds);
+          setTimeLeft(data.remainingSeconds);
+        } else {
+          console.log('Using default time (600 seconds)');
+        }
+      } catch (error) {
+        console.error('Error fetching remaining time:', error);
+      } finally {
+        setIsFetchingTime(false);
+      }
+    };
+
+    fetchRemainingTime();
+  }, [email]);
 
   // Countdown timer
   useEffect(() => {
@@ -114,6 +141,7 @@ export default function OTPVerification({ email, mode = 'signup' }: OTPVerificat
     setSuccess('');
 
     try {
+      console.log('Resending OTP for email:', email);
       const response = await fetch('/api/auth/verify-email', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -121,6 +149,7 @@ export default function OTPVerification({ email, mode = 'signup' }: OTPVerificat
       });
 
       const data = await response.json();
+      console.log('Resend API Response:', { status: response.status, data });
 
       if (!response.ok) {
         setError(data.error || 'Failed to resend OTP');
@@ -130,9 +159,17 @@ export default function OTPVerification({ email, mode = 'signup' }: OTPVerificat
 
       setSuccess('New OTP sent to your email!');
       setOtp(['', '', '', '', '', '']);
-      setTimeLeft(600); // Reset timer
+      // Use the remaining seconds from the server response
+      if (data.remainingSeconds !== undefined) {
+        console.log('Resend: Setting timeLeft to:', data.remainingSeconds);
+        setTimeLeft(data.remainingSeconds);
+      } else {
+        console.log('Resend: Using fallback time (600 seconds)');
+        setTimeLeft(600); // Fallback to 10 minutes
+      }
       setIsResending(false);
     } catch (error) {
+      console.error('Resend error:', error);
       setError('Something went wrong');
       setIsResending(false);
     }

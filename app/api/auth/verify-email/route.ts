@@ -2,6 +2,63 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { sendWelcomeEmail } from '@/lib/email';
 
+// Get remaining time for OTP
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const email = searchParams.get('email');
+
+    if (!email) {
+      return NextResponse.json(
+        { error: 'Email is required' },
+        { status: 400 }
+      );
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: { tokenExpires: true, emailVerified: true },
+    });
+
+    if (!user) {
+      return NextResponse.json(
+        { error: 'User not found' },
+        { status: 404 }
+      );
+    }
+
+    if (user.emailVerified) {
+      return NextResponse.json(
+        { error: 'Email already verified' },
+        { status: 400 }
+      );
+    }
+
+    if (!user.tokenExpires) {
+      return NextResponse.json(
+        { error: 'No OTP found' },
+        { status: 400 }
+      );
+    }
+
+    // Calculate remaining time in seconds
+    const now = new Date();
+    const expiresAt = new Date(user.tokenExpires);
+    const remainingSeconds = Math.max(0, Math.floor((expiresAt.getTime() - now.getTime()) / 1000));
+
+    return NextResponse.json(
+      { remainingSeconds },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Get remaining time error:', error);
+    return NextResponse.json(
+      { error: 'Something went wrong' },
+      { status: 500 }
+    );
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -16,7 +73,7 @@ export async function POST(request: NextRequest) {
 
     // Find user with this email and OTP
     const user = await prisma.user.findFirst({
-      where: { 
+      where: {
         email,
         emailVerificationToken: otp,
       },
@@ -123,7 +180,7 @@ export async function PUT(request: NextRequest) {
     await sendOTPEmail(email, user.name, otp);
 
     return NextResponse.json(
-      { message: 'New OTP sent successfully' },
+      { message: 'New OTP sent successfully', remainingSeconds: 600 },
       { status: 200 }
     );
   } catch (error) {
