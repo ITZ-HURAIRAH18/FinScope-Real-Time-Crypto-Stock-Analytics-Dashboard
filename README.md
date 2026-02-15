@@ -1,4 +1,4 @@
-# 🚀 FinScope – Real-Time Crypto & Stock Analytics Dashboard
+# 🚀 FinScope – Real-Time Crypto & Stock Analytics Dashboard ha
 
 > A comprehensive financial analytics platform with real-time trading simulation, portfolio management, and market analytics.
 
