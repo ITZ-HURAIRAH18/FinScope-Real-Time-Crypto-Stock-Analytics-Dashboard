@@ -80,7 +80,7 @@ export default function HomePage() {
             <div className="glass-card px-8 py-4 rounded-full flex items-center gap-4 hover:scale-105 transition duration-300 cursor-pointer animate-scaleIn animate-delay-300">
               <div className="relative w-12 h-12 rounded-full overflow-hidden shadow-lg shadow-red-500/20 animate-blink">
                 <Image 
-                  src="https://images.unsplash.com/photo-1642790106117-e829e14a795f?auto=format&fit=crop&w=128&q=80"
+                  src="/images/real-time.png"
                   alt="Real-time"
                   fill
                   className="object-cover"
@@ -91,7 +91,7 @@ export default function HomePage() {
             <div className="glass-card px-8 py-4 rounded-full flex items-center gap-4 hover:scale-105 transition duration-300 cursor-pointer animate-scaleIn animate-delay-400">
               <div className="relative w-12 h-12 rounded-full overflow-hidden shadow-lg shadow-pink-500/20">
                 <Image 
-                  src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=128&q=80"
+                  src="/images/charts.png"
                   alt="Charts"
                   fill
                   className="object-cover"
@@ -102,7 +102,7 @@ export default function HomePage() {
             <div className="glass-card px-8 py-4 rounded-full flex items-center gap-4 hover:scale-105 transition duration-300 cursor-pointer animate-scaleIn animate-delay-500">
               <div className="relative w-12 h-12 rounded-full overflow-hidden shadow-lg shadow-rose-500/20">
                 <Image 
-                  src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=128&q=80"
+                  src="/images/watchlists.png"
                   alt="Watchlists"
                   fill
                   className="object-cover"
@@ -113,7 +113,7 @@ export default function HomePage() {
             <div className="glass-card px-8 py-4 rounded-full flex items-center gap-4 hover:scale-105 transition duration-300 cursor-pointer animate-scaleIn animate-delay-600">
                <div className="relative w-12 h-12 rounded-full overflow-hidden shadow-lg shadow-pink-500/20">
                 <Image 
-                  src="https://images.unsplash.com/photo-1551808525-51a94da548ce?auto=format&fit=crop&w=128&q=80"
+                  src="/images/analytics.png"
                   alt="Analytics"
                   fill
                   className="object-cover"
@@ -148,7 +148,7 @@ export default function HomePage() {
           <div className="glass-card p-8 rounded-2xl space-y-4 hover:shadow-xl hover:shadow-red-500/20 transition group animate-slideUp">
             <div className="w-full h-48 relative rounded-xl overflow-hidden mb-4">
               <Image
-                src="https://images.unsplash.com/photo-1642790106117-e829e14a795f?auto=format&fit=crop&w=800&q=80"
+                src="/images/real-time.png"
                 alt="Live Market Data"
                 fill
                 className="object-cover group-hover:scale-110 transition duration-500"
@@ -165,7 +165,7 @@ export default function HomePage() {
           <div className="glass-card p-8 rounded-2xl space-y-4 hover:shadow-xl hover:shadow-pink-500/20 transition group animate-slideUp animate-delay-200">
             <div className="w-full h-48 relative rounded-xl overflow-hidden mb-4">
                <Image
-                src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80"
+                src="/images/charts.png"
                 alt="Interactive Charts"
                 fill
                 className="object-cover group-hover:scale-110 transition duration-500"
@@ -182,7 +182,7 @@ export default function HomePage() {
           <div className="glass-card p-8 rounded-2xl space-y-4 hover:shadow-xl hover:shadow-rose-500/20 transition group animate-slideUp animate-delay-400">
             <div className="w-full h-48 relative rounded-xl overflow-hidden mb-4">
                <Image
-                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80"
+                src="/images/watchlists.png"
                 alt="Personal Watchlists"
                 fill
                 className="object-cover group-hover:scale-110 transition duration-500"
